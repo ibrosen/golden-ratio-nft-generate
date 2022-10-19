@@ -1,8 +1,8 @@
 import fs from 'fs';
-import { generateSingleImage } from "./generate";
-import { readLayersIntoMemory } from "./layers";
-import { CollectionTraits, Trait } from "./types";
-import { randomInt, rmMkdir, sleep } from './utils';
+import { generateSingleImage } from "../utils/generate";
+import { readLayersIntoMemory } from "../utils/layers";
+import { CollectionTraits, Trait } from "../types";
+import { randomInt, rmMkdir, sleep } from '../utils/general';
 
 const generate = async (traits: Omit<Trait, 'data'>[], layers: CollectionTraits, outDir: string) => {
     const actualTraits: Trait[] = [];

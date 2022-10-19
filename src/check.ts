@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { FOLDER_BATCH_SIZE, NUM_TO_GENERATE } from './utils';
+import { FOLDER_BATCH_SIZE, NUM_TO_GENERATE } from './utils/general';
 
 export const checkProgress = async (total: number) => {
     const basePath = __dirname + '/out/images';

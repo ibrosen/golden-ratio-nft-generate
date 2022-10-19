@@ -4,8 +4,8 @@ import fs from 'fs';
 import path from 'path';
 import { stdout } from 'process';
 import sharp from 'sharp';
-import { CollectionTraits } from './types';
-import { rmMkdir, sleep } from './utils';
+import { CollectionTraits } from '../types';
+import { rmMkdir, sleep } from './general';
 
 /**
  * Read all layers from the file system into memory.
@@ -20,11 +20,13 @@ export const readLayersIntoMemory = async (writeAndResize?: boolean, readImages?
     let count = 0;
     let countSoFar = 0;
     const collectionTraits: CollectionTraits = {};
-    const outDirName = __dirname + '/layers-resized';
-    rmMkdir(__dirname + '/out')
-    if (writeAndResize) rmMkdir(outDirName);
+    const outDirName = process.cwd() + '/src/layers-resized';
+    if (writeAndResize) {
+        rmMkdir(process.cwd() + '/src/out')
+        rmMkdir(outDirName)
+    }
 
-    const layerRootDir = __dirname + (writeAndResize ? '/cc0-nft-layers' : '/layers-resized');
+    const layerRootDir = process.cwd() + (writeAndResize ? '/src/cc0-nft-layers' : '/src/layers-resized');
     const collections = fs.readdirSync(layerRootDir).filter(c => c !== '.DS_Store');
     for (let i = 0; i < collections.length; i++) {
         const col = collections[i];

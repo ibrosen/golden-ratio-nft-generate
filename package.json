@@ -5,11 +5,8 @@
     "main": "index.js",
     "scripts": {
         "check": "npx ts-node src/check.ts",
-        "scrape": "npx ts-node src/scrapeLayers.ts",
-        "generate": "npx ts-node src/index.ts",
-        "generate-s": "npx ts-node src/generateSingle.ts",
-        "resize": "npx ts-node src/init.ts",
-        "rename": "npx ts-node src/rename.ts"
+        "generate": "npx ts-node src/generate.ts",
+        "setup": "npx ts-node src/setup.ts"
     },
     "keywords": [],
     "author": "",
