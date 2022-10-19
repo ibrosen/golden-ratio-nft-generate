@@ -1,14 +1,9 @@
 import fs from 'fs';
 import keccak256 from 'keccak256';
-import sharp from 'sharp';
 import { readLayersIntoMemory } from './utils/layers';
-import { CollectionTraits, Layer, Trait } from './types';
-import { FOLDER_BATCH_SIZE, NUM_TO_GENERATE, randomInt, rmMkdir } from './utils/general';
+import { Trait } from './types';
+import { FOLDER_BATCH_SIZE, NUM_TO_GENERATE, rmMkdir } from './utils/general';
 import { generateRandom, generateSingleImage } from './utils/generate';
-
-const NUM_COLLECTIONS_SO_FAR = 5;
-
-
 
 const executeBatch = async (curr: Promise<void>, promises: Promise<void>[], size = 1000) => {
     promises.push(curr);
@@ -28,8 +23,8 @@ export const generateMetadata = async (numToGenerate: number) => {
     let collisions = 0;
 
     rmMkdir(outMetaDir);
+    await new Promise((resolve) => setTimeout(resolve, 5000))
     for (let i = 0; i < Math.floor(numToGenerate / FOLDER_BATCH_SIZE); i++) {
-
         fs.mkdirSync(`${outMetaDir}/${i * FOLDER_BATCH_SIZE}`)
 
     }
@@ -56,7 +51,7 @@ export const generateMetadata = async (numToGenerate: number) => {
     }
 
 
-    console.log(`Generated ${randoms.length} images, with ${collisions} collisions in ${(Date.now() - start) / 1000}s`);
+    console.log(`Generated ${randoms.length} metadata, with ${collisions} collisions in ${(Date.now() - start) / 1000}s`);
 
     const out: Record<number, any> = {}
     randoms.forEach((r, i) => {
@@ -109,7 +104,7 @@ const main = async () => {
     else if (mode === '--images')
         await generateImages(NUM_TO_GENERATE)
     else
-        console.log('❌ Invalid mode, use --metadata or --images to generate metadata or images respectively')
+        console.error('❌ Invalid mode, use --metadata or --images to generate metadata or images respectively')
 }
 
 main()

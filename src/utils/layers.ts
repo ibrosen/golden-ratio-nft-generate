@@ -1,5 +1,4 @@
 
-const dotenv = require('dotenv');
 import fs from 'fs';
 import path from 'path';
 import { stdout } from 'process';

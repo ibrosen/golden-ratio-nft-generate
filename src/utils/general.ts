@@ -9,9 +9,9 @@ export const randomInt = (max: number) =>
 export const rmMkdir = (dir: string) => {
     if (fs.existsSync(dir)) {
         fs.rmSync(dir, { recursive: true, force: true });
-    } else {
         fs.rmdirSync(dir);
     }
+    console.log(`Making dir: ${dir}`)
     fs.mkdirSync(dir);
 };
 

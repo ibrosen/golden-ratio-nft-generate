@@ -1,9 +1,6 @@
-import fs from 'fs';
-import keccak256 from 'keccak256';
 import sharp from 'sharp';
-import { readLayersIntoMemory } from './layers';
-import { CollectionTraits, Layer, Trait } from '../types';
-import { FOLDER_BATCH_SIZE, randomInt, rmMkdir } from './general';
+import { CollectionTraits, Trait } from '../types';
+import { FOLDER_BATCH_SIZE, randomInt } from './general';
 
 const NUM_COLLECTIONS_SO_FAR = 5;
 
