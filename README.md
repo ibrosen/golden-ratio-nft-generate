@@ -12,9 +12,21 @@ Run the below command to take all of these original layers and resize them all t
 yarn setup
 ```
 
-## Generate metadata
+## Generating
+
+To generate the assets, we use a seeded RNG approach. We only need our RNG here to be "good enough", as the contract is responsible for ensuring there's no way of knowing which NFT will have which metadata.
+
+### Metadata
 
 ```
+yarn generate --metadata
+
+```
+
+### Images
+
+```
+yarn generate --images
 
 ```
 
