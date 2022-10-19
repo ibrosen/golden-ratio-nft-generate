@@ -2,3 +2,4 @@
 node_modules
 src/out
 src/layers-resized
+.yarn
