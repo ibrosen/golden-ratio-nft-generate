@@ -1,6 +1,6 @@
 import sharp from 'sharp';
 import { CollectionTraits, Trait } from '../types';
-import { FOLDER_BATCH_SIZE, randomInt } from './general';
+import { FOLDER_BATCH_SIZE, rand, randomInt } from './general';
 
 const NUM_COLLECTIONS_SO_FAR = 5;
 
@@ -52,7 +52,7 @@ export const generateRandom = async (collectionLayers: CollectionTraits) => {
     toMash.push(body);
 
     if (body.collection === 'nouns') {
-        if (Math.random() < 0.7)
+        if (rand() < 0.7)
             toMash.push(
                 pickRandomLayer(
                     {
@@ -72,7 +72,7 @@ export const generateRandom = async (collectionLayers: CollectionTraits) => {
     );
 
     if (body.collection === 'mfers') {
-        if (Math.random() > 0.5)
+        if (rand() > 0.5)
             head = pickRandomLayer(
                 {
                     mfers: ['shirt'],
@@ -80,7 +80,7 @@ export const generateRandom = async (collectionLayers: CollectionTraits) => {
             );
     } else if (['moonbirds'].includes(body.collection)) {
         // tinydinos and moonbirds have body and head as one
-        if (Math.random() > 0.5) {
+        if (rand() > 0.5) {
             head = pickHeadNormal();
         }
         // else if (body.collection === 'moonbirds') {
@@ -116,7 +116,7 @@ export const generateRandom = async (collectionLayers: CollectionTraits) => {
         ));
     };
 
-    const randNose = Math.random();
+    const randNose = rand();
     const addGoblinNose = () => {
         toMash.push(pickRandomLayer(
             {
@@ -126,7 +126,7 @@ export const generateRandom = async (collectionLayers: CollectionTraits) => {
     };
 
     //eyes
-    const randEyes = Math.random();
+    const randEyes = rand();
     if (randEyes < 1.3 / NUM_COLLECTIONS_SO_FAR) {
         addGoblinEyes();
 
@@ -208,7 +208,7 @@ export const generateRandom = async (collectionLayers: CollectionTraits) => {
                 }, collectionLayers
             ));
     };
-    const randMouth = Math.random();
+    const randMouth = rand();
     if (toMash.find(t => t.traitType === "Eyes" && t.collection === 'moonbirds')) {
         toMash.push(pickRandomLayer(
             {
@@ -256,7 +256,7 @@ export const generateRandom = async (collectionLayers: CollectionTraits) => {
 
 
     //hat
-    const ranHat = Math.random();
+    const ranHat = rand();
     if (head?.collection === 'tinydinos') {
         if (ranHat < 0.33)
             toMash.push(pickRandomLayer(
@@ -349,7 +349,7 @@ export const generateRandom = async (collectionLayers: CollectionTraits) => {
 
 
     //clothes / accessories
-    const accRand = Math.random();
+    const accRand = rand();
     if (body.collection === 'moonbirds') {
         if (accRand < 0.7)
             toMash.push(
