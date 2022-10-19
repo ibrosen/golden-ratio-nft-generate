@@ -1,0 +1,31 @@
+{
+    "name": "goodminds",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "check": "npx ts-node src/check.ts",
+        "scrape": "npx ts-node src/scrapeLayers.ts",
+        "generate": "npx ts-node src/index.ts",
+        "generate-s": "npx ts-node src/generateSingle.ts",
+        "resize": "npx ts-node src/init.ts",
+        "rename": "npx ts-node src/rename.ts"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@types/sharp": "^0.30.2",
+        "axios": "^0.26.1",
+        "find-config": "^1.0.0",
+        "https": "^1.0.0",
+        "keccak256": "^1.0.6",
+        "sharp": "^0.30.4",
+        "web3": "^1.7.5",
+        "web3-eth-contract": "^1.7.5"
+    },
+    "devDependencies": {
+        "@types/node": "^18.11.0",
+        "dotenv": "^16.0.3"
+    }
+}
