@@ -5,13 +5,7 @@ import { Trait } from './types';
 import { FOLDER_BATCH_SIZE, NUM_TO_GENERATE, rmMkdir, sleep } from './utils/general';
 import { generateRandom, generateSingleImage } from './utils/generate';
 
-const executeBatch = async (curr: Promise<void>, promises: Promise<void>[], size = 100) => {
-    promises.push(curr);
-    if (promises.length >= size) {
-        await Promise.all(promises);
-        promises = [];
-    }
-}
+
 
 const outMetaDir = `${process.cwd()}/src/out/metadata`
 
@@ -80,6 +74,13 @@ export const generateImages = async (numToGenerate: number) => {
 
     let promises: Promise<void>[] = [];
     let generated = 0;
+    const executeBatch = async (curr: Promise<void>, size = 100) => {
+        promises.push(curr);
+        if (promises.length >= size) {
+            await Promise.all(promises);
+            promises = [];
+        }
+    }
     while (generated < numToGenerate) {
         const meta = JSON.parse(fs.readFileSync(`${outMetaDir}/${Math.floor(generated / FOLDER_BATCH_SIZE) * FOLDER_BATCH_SIZE}/${generated}.json`, { encoding: 'utf-8' }))
 
@@ -91,7 +92,7 @@ export const generateImages = async (numToGenerate: number) => {
             return found;
         })
 
-        await executeBatch(generateSingleImage(traits, generated, outImageDir), promises)
+        await executeBatch(generateSingleImage(traits, generated, outImageDir))
         console.log(`Length of promises ${promises.length}`)
         process.stdout.write(`#${soFar++} successfully generated \r`);
 
