@@ -69,6 +69,7 @@ export const generateMetadata = async (numToGenerate: number) => {
 const outImageDir = `${process.cwd()}/src/out/images`;
 export const generateImages = async (numToGenerate: number) => {
     const collectionLayers = await readLayersIntoMemory(true);
+    let soFar = 0;
     rmMkdir(outImageDir);
     await sleep(2000)
     for (let i = 0; i < Math.floor(numToGenerate / FOLDER_BATCH_SIZE); i++) {
@@ -91,6 +92,8 @@ export const generateImages = async (numToGenerate: number) => {
         })
 
         await executeBatch(generateSingleImage(traits, generated, outImageDir), promises)
+        process.stdout.write(`#${soFar++} successfully generated \r`);
+
         generated++;
     }
     console.log(`Generated ${generated} images in ${(Date.now() - start) / 1000}s`);
@@ -99,8 +102,6 @@ export const generateImages = async (numToGenerate: number) => {
 
 const main = async () => {
     const mode = process.argv[process.argv.length - 1];
-    console.log(mode)
-    console.log(process.argv)
     if (mode === '--metadata')
         await generateMetadata(NUM_TO_GENERATE)
     else if (mode === '--images')
