@@ -92,6 +92,7 @@ export const generateImages = async (numToGenerate: number) => {
         })
 
         await executeBatch(generateSingleImage(traits, generated, outImageDir), promises)
+        console.log(`Length of promises ${promises.length}`)
         process.stdout.write(`#${soFar++} successfully generated \r`);
 
         generated++;
