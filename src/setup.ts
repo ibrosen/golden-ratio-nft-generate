@@ -1,8 +1,8 @@
-import { readLayersIntoMemory } from "./utils/layers";
+import { readLayersIntoMemory, resizeLayers } from "./utils/layers";
 
 
 const main = async () => {
-    await readLayersIntoMemory(true);
+    await resizeLayers();
 };
 
 

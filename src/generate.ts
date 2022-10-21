@@ -2,7 +2,7 @@ import fs from 'fs';
 import keccak256 from 'keccak256';
 import { readLayersIntoMemory } from './utils/layers';
 import { Trait } from './types';
-import { FOLDER_BATCH_SIZE, NUM_TO_GENERATE, rmMkdir } from './utils/general';
+import { FOLDER_BATCH_SIZE, NUM_TO_GENERATE, rmMkdir, sleep } from './utils/general';
 import { generateRandom, generateSingleImage } from './utils/generate';
 
 const executeBatch = async (curr: Promise<void>, promises: Promise<void>[], size = 1000) => {
@@ -13,7 +13,6 @@ const executeBatch = async (curr: Promise<void>, promises: Promise<void>[], size
     }
 }
 
-const outImageDir = `${process.cwd()}/src/out/images`;
 const outMetaDir = `${process.cwd()}/src/out/metadata`
 
 export const generateMetadata = async (numToGenerate: number) => {
@@ -23,10 +22,9 @@ export const generateMetadata = async (numToGenerate: number) => {
     let collisions = 0;
 
     rmMkdir(outMetaDir);
-    await new Promise((resolve) => setTimeout(resolve, 5000))
+    await sleep(2000)
     for (let i = 0; i < Math.floor(numToGenerate / FOLDER_BATCH_SIZE); i++) {
         fs.mkdirSync(`${outMetaDir}/${i * FOLDER_BATCH_SIZE}`)
-
     }
     const start = Date.now();
 
@@ -68,12 +66,15 @@ export const generateMetadata = async (numToGenerate: number) => {
     }
 };
 
+const outImageDir = `${process.cwd()}/src/out/images`;
 export const generateImages = async (numToGenerate: number) => {
-    const collectionLayers = await readLayersIntoMemory(false, true);
+    const collectionLayers = await readLayersIntoMemory(true);
     rmMkdir(outImageDir);
+    await sleep(2000)
     for (let i = 0; i < Math.floor(numToGenerate / FOLDER_BATCH_SIZE); i++) {
         fs.mkdirSync(`${outImageDir}/${i * FOLDER_BATCH_SIZE}`)
     }
+    await sleep(2000)
     const start = Date.now();
 
     let promises: Promise<void>[] = [];
@@ -97,7 +98,7 @@ export const generateImages = async (numToGenerate: number) => {
 
 
 const main = async () => {
-    const mode = process.argv[2];
+    const mode = process.argv[process.argv.length - 1];
 
     if (mode === '--metadata')
         await generateMetadata(NUM_TO_GENERATE)

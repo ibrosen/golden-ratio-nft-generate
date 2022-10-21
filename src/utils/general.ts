@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-export const NUM_TO_GENERATE = 10000;
+export const NUM_TO_GENERATE = 1000;
 export const FOLDER_BATCH_SIZE = 1000;
 
 // Seeded RNG https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-in-javascript
@@ -30,7 +30,7 @@ const cyrb128 = (str: string) => {
     return [(h1 ^ h2 ^ h3 ^ h4) >>> 0, (h2 ^ h1) >>> 0, (h3 ^ h1) >>> 0, (h4 ^ h1) >>> 0];
 }
 // Create cyrb128 state:
-var seed = cyrb128("apples");
+var seed = cyrb128("golden ratio");
 
 // Only one 32-bit component hash is needed for mulberry32.
 export const rand = mulberry32(seed[0]);

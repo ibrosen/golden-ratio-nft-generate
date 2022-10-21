@@ -14,7 +14,7 @@ export const checkProgress = async (total: number) => {
         }
     }
 
-    console.log("✔ All done!")
+    console.log(`✔ All ${total} done`)
 }
 
 checkProgress(NUM_TO_GENERATE);

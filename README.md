@@ -36,4 +36,4 @@ yarn generate --images
 
 ## Check progress
 
-If you're running the image generation on a machine in the background and wish to see the progress, call `yarn check`, which will look in the `out/images/` directory and report back the progress.
+If you're running the image generation on a machine in the background and wish to see the progress, run `yarn check`, which will look in the `out/images/` directory and report back the progress.
