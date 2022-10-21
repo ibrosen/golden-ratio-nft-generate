@@ -99,7 +99,8 @@ export const generateImages = async (numToGenerate: number) => {
 
 const main = async () => {
     const mode = process.argv[process.argv.length - 1];
-
+    console.log(mode)
+    console.log(process.argv)
     if (mode === '--metadata')
         await generateMetadata(NUM_TO_GENERATE)
     else if (mode === '--images')
