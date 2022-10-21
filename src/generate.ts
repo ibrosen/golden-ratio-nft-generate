@@ -5,7 +5,7 @@ import { Trait } from './types';
 import { FOLDER_BATCH_SIZE, NUM_TO_GENERATE, rmMkdir, sleep } from './utils/general';
 import { generateRandom, generateSingleImage } from './utils/generate';
 
-const executeBatch = async (curr: Promise<void>, promises: Promise<void>[], size = 1000) => {
+const executeBatch = async (curr: Promise<void>, promises: Promise<void>[], size = 100) => {
     promises.push(curr);
     if (promises.length >= size) {
         await Promise.all(promises);
