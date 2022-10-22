@@ -1,9 +1,8 @@
 import sharp from 'sharp';
 import { CollectionTraits, Trait } from '../types';
-import { FOLDER_BATCH_SIZE, rand, randomInt } from './general';
+import { rand, randomInt } from './general';
 
 const NUM_COLLECTIONS_SO_FAR = 5;
-
 
 const pickRandomLayer = (layers: Record<string, string[]>, collectionLayers: CollectionTraits, limitedTraitPool: string[] = []): Trait => {
     const collections = Object.keys(layers);
@@ -394,11 +393,11 @@ export const generateRandom = async (collectionLayers: CollectionTraits) => {
     return toMash;
 };
 
-export const generateSingleImage = async (traits: Trait[], i: number, outDir: string) => {
+export const generateSingleImage = async (traits: Trait[], i: number, outDir: string, folderBatchSize: number) => {
     await (sharp(traits[0].data)
         .composite(
             traits.map((t, i) => (
                 { input: traits[i].data }
             ))
-        )).toFormat('webp').toFile(`${outDir}/${Math.floor(i / FOLDER_BATCH_SIZE) * FOLDER_BATCH_SIZE}/${i}.webp`);
+        )).toFormat('webp').toFile(`${outDir}/${Math.floor(i / folderBatchSize) * folderBatchSize}/${i}.webp`);
 };

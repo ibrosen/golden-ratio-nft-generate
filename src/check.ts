@@ -1,20 +1,28 @@
 import fs from 'fs'
-import { FOLDER_BATCH_SIZE, NUM_TO_GENERATE } from './utils/general';
 
-export const checkProgress = async (total: number) => {
+export const checkProgress = async (startId: number, numToCheck: number, folderBatchSize: number) => {
     const basePath = __dirname + '/out/images';
 
-    for (let i = 0; i < Math.floor(total / FOLDER_BATCH_SIZE); i++) {
+    for (let i = Math.floor(startId / folderBatchSize); i < Math.floor(numToCheck / folderBatchSize); i++) {
 
-        const size = fs.readdirSync(`${basePath}/${i * FOLDER_BATCH_SIZE}`).filter(c => c !== '.DS_Store').length;
+        const size = fs.readdirSync(`${basePath}/${i * folderBatchSize}`).filter(c => c !== '.DS_Store').length;
 
-        if (size !== FOLDER_BATCH_SIZE) {
-            console.log(`📊 [${i * FOLDER_BATCH_SIZE + size}/${total}] generated so far`)
+        if (size !== folderBatchSize) {
+            console.log(`📊 [${i * folderBatchSize + size}/${numToCheck}] generated so far`)
             return;
         }
     }
 
-    console.log(`✔ All ${total} done`)
+    console.log(`✔ All ${numToCheck} done`)
 }
 
-checkProgress(NUM_TO_GENERATE);
+const main = async () => {
+    const startId = +process.argv[process.argv.length - 3];
+    const numToGenerate = +process.argv[process.argv.length - 2];
+    const folderBatchSize = +process.argv[process.argv.length - 2];
+    console.log(process.argv)
+    checkProgress(startId, numToGenerate, folderBatchSize);
+
+}
+
+main()
