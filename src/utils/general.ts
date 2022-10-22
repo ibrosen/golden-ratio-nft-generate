@@ -1,7 +1,7 @@
 import fs from 'fs';
 
-export const NUM_TO_GENERATE = 1000;
-export const FOLDER_BATCH_SIZE = 1000;
+export const NUM_TO_GENERATE = 50000;
+export const FOLDER_BATCH_SIZE = 10000;
 
 // Seeded RNG https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-in-javascript
 const mulberry32 = (a: number) => {
