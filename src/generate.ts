@@ -16,7 +16,7 @@ export const generateMetadata = async (numToGenerate: number) => {
     let collisions = 0;
 
     rmMkdir(outMetaDir);
-    await sleep(2000)
+    await sleep(5000)
     for (let i = 0; i < Math.floor(numToGenerate / FOLDER_BATCH_SIZE); i++) {
         fs.mkdirSync(`${outMetaDir}/${i * FOLDER_BATCH_SIZE}`)
     }
@@ -65,11 +65,11 @@ export const generateImages = async (numToGenerate: number) => {
     const collectionLayers = await readLayersIntoMemory(true);
     let soFar = 0;
     rmMkdir(outImageDir);
-    await sleep(2000)
+    await sleep(5000)
     for (let i = 0; i < Math.floor(numToGenerate / FOLDER_BATCH_SIZE); i++) {
         fs.mkdirSync(`${outImageDir}/${i * FOLDER_BATCH_SIZE}`)
     }
-    await sleep(2000)
+    await sleep(5000)
     const start = Date.now();
 
     let promises: Promise<void>[] = [];
