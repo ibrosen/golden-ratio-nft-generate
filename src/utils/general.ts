@@ -1,5 +1,10 @@
 import fs from 'fs';
 
+export const outImageDir = `${process.cwd()}/src/out/images`;
+export const outMetaDir = `${process.cwd()}/src/out/metadata`;
+
+export const TOTAL_TO_GENERATE = 10_000_000;
+
 
 // Seeded RNG https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-in-javascript
 const mulberry32 = (a: number) => {

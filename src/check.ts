@@ -1,20 +1,6 @@
 import fs from 'fs'
+import { checkProgress } from './utils/check';
 
-export const checkProgress = async (startId: number, numToCheck: number, folderBatchSize: number) => {
-    const basePath = __dirname + '/out/images';
-
-    for (let i = Math.floor(startId / folderBatchSize); i < Math.floor(numToCheck / folderBatchSize); i++) {
-
-        const size = fs.readdirSync(`${basePath}/${i * folderBatchSize}`).filter(c => c !== '.DS_Store').length;
-
-        if (size !== folderBatchSize) {
-            console.log(`📊 [${i * folderBatchSize + size}/${numToCheck}] generated so far`)
-            return;
-        }
-    }
-
-    console.log(`✔ All ${numToCheck} done`)
-}
 
 const main = async () => {
     const startId = +process.argv[process.argv.length - 3];

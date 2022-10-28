@@ -2,12 +2,10 @@ import fs from 'fs';
 import keccak256 from 'keccak256';
 import { readLayersIntoMemory } from './utils/layers';
 import { TokenMetadata, Trait } from './types';
-import { rmMkdir, sleep } from './utils/general';
+import { outImageDir, outMetaDir, sleep } from './utils/general';
 import { generateRandom, generateSingleImage } from './utils/generate';
+import { checkProgress } from './utils/check';
 
-
-
-const outMetaDir = `${process.cwd()}/src/out/metadata`
 
 export const generateMetadata = async (startId: number, numToGenerate: number, folderBatchSize: number) => {
     const collectionLayers = await readLayersIntoMemory();
@@ -15,11 +13,6 @@ export const generateMetadata = async (startId: number, numToGenerate: number, f
     const randoms: Trait[][] = [];
     let collisions = 0;
 
-    rmMkdir(outMetaDir);
-    await sleep(5000)
-    for (let i = Math.floor(startId / folderBatchSize); i < Math.floor((startId + numToGenerate) / folderBatchSize); i++) {
-        fs.mkdirSync(`${outMetaDir}/${i * folderBatchSize}`)
-    }
     const start = Date.now();
 
     for (let i = 0; i < numToGenerate + startId; i++) {
@@ -27,7 +20,7 @@ export const generateMetadata = async (startId: number, numToGenerate: number, f
         const random = await generateRandom(collectionLayers);
 
         const traitStrs: string[] = [];
-        random.forEach(t => traitStrs.push(`${t.traitType}:${t.value}`));
+        random.forEach(t => traitStrs.push(`${t.trait_type}:${t.value}`));
         const hash = keccak256(traitStrs.join(',')).toString('hex').slice(0, 32);
 
         if (!seen[hash]) {
@@ -52,7 +45,7 @@ export const generateMetadata = async (startId: number, numToGenerate: number, f
         out[i] = {
             name: `Golden Ratio #${id}`, attributes: r.map(r => ({
                 value: r.value,
-                trait_type: `${r.collection}-${r.traitType}`
+                trait_type: `${r.collection}-${r.trait_type}`
             })),
             description: "Description",
             image: `ipfs://${id}`
@@ -65,23 +58,16 @@ export const generateMetadata = async (startId: number, numToGenerate: number, f
     }
 };
 
-const outImageDir = `${process.cwd()}/src/out/images`;
-export const generateImages = async (startId: number, numToGenerate: number, folderBatchSize: number, removeFolders?: boolean) => {
+export const generateImages = async (startId: number, numToGenerate: number, folderBatchSize: number) => {
     const collectionLayers = await readLayersIntoMemory(true);
     let soFar = 0;
-    if (removeFolders) {
-        rmMkdir(outImageDir);
-        await sleep(5000)
-        for (let i = Math.floor(startId / folderBatchSize); i < Math.floor(numToGenerate / folderBatchSize); i++) {
-            fs.mkdirSync(`${outImageDir}/${i * folderBatchSize}`)
-        }
-    }
     await sleep(5000)
     const start = Date.now();
 
     let promises: Promise<void>[] = [];
     let generated = 0;
-    let currId = startId;
+    let currId = startId + await checkProgress(startId, numToGenerate, folderBatchSize);;
+    console.log(currId)
     const executeBatch = async (curr: Promise<void>, size = 100) => {
         promises.push(curr);
         if (promises.length >= size) {
@@ -91,9 +77,11 @@ export const generateImages = async (startId: number, numToGenerate: number, fol
     }
     while (generated < numToGenerate) {
         const meta = JSON.parse(fs.readFileSync(`${outMetaDir}/${Math.floor(generated / folderBatchSize) * folderBatchSize}/${currId}.json`, { encoding: 'utf-8' }))
-
         const traits = meta.attributes.map((attr: Trait) => {
-            const found = collectionLayers[attr.collection][attr.traitType].find(t => t.value === attr.value)
+            const traitTypeSplit = attr.trait_type.split("-");
+            const traitType = traitTypeSplit.slice(1).join("-")
+            const collection = traitTypeSplit[0]
+            const found = collectionLayers[collection][traitType].find(t => t.value === attr.value)
 
             if (!found)
                 throw "couldnt find";
@@ -111,16 +99,15 @@ export const generateImages = async (startId: number, numToGenerate: number, fol
 
 
 const main = async () => {
-    const mode = process.argv[process.argv.length - 5];
-    const startId = +process.argv[process.argv.length - 4];
-    const numToGenerate = +process.argv[process.argv.length - 3];
-    const folderBatchSize = +process.argv[process.argv.length - 2];
-    const removeFolders = !!+process.argv[process.argv.length - 1];
+    const folderBatchSize = +process.argv.pop()!;
+    const numToGenerate = +process.argv.pop()!;
+    const startId = +process.argv.pop()!;
+    const mode = process.argv.pop();
     console.log(process.argv)
     if (mode === '--metadata')
         await generateMetadata(startId, numToGenerate, folderBatchSize)
     else if (mode === '--images')
-        await generateImages(startId, numToGenerate, folderBatchSize, removeFolders)
+        await generateImages(startId, numToGenerate, folderBatchSize)
     else
         console.error('❌ Invalid mode, use --metadata or --images to generate metadata or images respectively')
 }

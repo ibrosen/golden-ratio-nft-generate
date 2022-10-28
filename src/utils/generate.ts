@@ -208,7 +208,7 @@ export const generateRandom = async (collectionLayers: CollectionTraits) => {
             ));
     };
     const randMouth = rand();
-    if (toMash.find(t => t.traitType === "Eyes" && t.collection === 'moonbirds')) {
+    if (toMash.find(t => t.trait_type === "Eyes" && t.collection === 'moonbirds')) {
         toMash.push(pickRandomLayer(
             {
                 moonbirds: ['Beak']
@@ -216,8 +216,8 @@ export const generateRandom = async (collectionLayers: CollectionTraits) => {
             }, collectionLayers
         ));
     }
-    else if (toMash.find(t => t.collection === 'goblintown' && (t.traitType === 'Eye on dat side' || t.traitType === 'Hedz'))) {
-        if (toMash.find(t => t.collection === 'goblintown' && t.traitType === 'stankfinder')) {
+    else if (toMash.find(t => t.collection === 'goblintown' && (t.trait_type === 'Eye on dat side' || t.trait_type === 'Hedz'))) {
+        if (toMash.find(t => t.collection === 'goblintown' && t.trait_type === 'stankfinder')) {
             toMash.push(pickRandomLayer(
                 {
                     goblintown: ['MUNCHYHOLE']
@@ -235,11 +235,11 @@ export const generateRandom = async (collectionLayers: CollectionTraits) => {
     }
     //
     else if (body.collection === 'tinydinos') {
-        if (randMouth < 0.6 && !toMash.find(t => t.collection === 'tinydinos' && t.traitType === 'eyes')) {
+        if (randMouth < 0.6 && !toMash.find(t => t.collection === 'tinydinos' && t.trait_type === 'eyes')) {
             addMferOrGobMouth();
         }
     } else if (head?.collection === 'mfers') {
-        if (!toMash.find(t => t.collection === 'goblintown' && t.traitType === 'stankfinder'))
+        if (!toMash.find(t => t.collection === 'goblintown' && t.trait_type === 'stankfinder'))
             toMash.push(pickRandomLayer(
                 {
                     mfers: ['mouth'],
@@ -269,7 +269,7 @@ export const generateRandom = async (collectionLayers: CollectionTraits) => {
                     tinydinos: ['spikes'],
                 }, collectionLayers
             ));
-    } else if (['moonbirds'].includes(head?.collection ?? '') && !toMash.find(t => t.traitType === 'Eye on dat side')) {
+    } else if (['moonbirds'].includes(head?.collection ?? '') && !toMash.find(t => t.trait_type === 'Eye on dat side')) {
         if (ranHat < 0.9)
             if (ranHat < 0.15) {
                 toMash.push(pickRandomLayer(
@@ -365,7 +365,7 @@ export const generateRandom = async (collectionLayers: CollectionTraits) => {
                         mfers: ['shirt'],
                     }, collectionLayers,
                 ));
-        if (accRand < 0.6 && accRand > 0.2 && !toMash.find(t => t.collection === 'moonbirds' && t.traitType === 'Eyes'))
+        if (accRand < 0.6 && accRand > 0.2 && !toMash.find(t => t.collection === 'moonbirds' && t.trait_type === 'Eyes'))
             toMash.push(
                 pickRandomLayer(
                     {

@@ -26,7 +26,7 @@ const recurseThroughLayerFolder = async (callBack: (trait: Trait) => void, layer
             for (let k = 0; k < traits.length; k++) {
                 const traitValue = traits[k].split('.')[0];
                 const trait: Trait = {
-                    traitType, value: traitValue, data: readImages ?
+                    trait_type: traitType, value: traitValue, data: readImages ?
                         await sharp(path.resolve(colTraitTypeDir, `${traitValue}.png`))
                             .toBuffer()
                         : Buffer.from([]), collection: col
@@ -56,7 +56,7 @@ export const readLayersIntoMemory = async (readImages?: boolean) => {
 
     const layerRootDir = process.cwd() + '/src/layers-resized';
     await recurseThroughLayerFolder((trait: Trait) => {
-        const { traitType, collection } = trait
+        const { trait_type: traitType, collection } = trait
         if (!collectionTraits[collection])
             collectionTraits[collection] = {};
         if (!collectionTraits[collection][traitType])
@@ -77,7 +77,7 @@ export const resizeLayers = async () => {
     await sleep(2000);
     let countSoFar = 0;
     await recurseThroughLayerFolder(async (trait: Trait) => {
-        const { collection, traitType, value } = trait
+        const { collection, trait_type: traitType, value } = trait
         const colDir = `${layerRootDir}/${collection}`;
         const colTraitTypeDir = `${colDir}/${traitType}`;
         const outColDir = `${outDirName}/${collection}`;

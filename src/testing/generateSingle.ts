@@ -9,8 +9,8 @@ const generate = async (traits: Omit<Trait, 'data'>[], layers: CollectionTraits,
 
     traits.forEach(t => {
         // console.log(layers[t.collection][t.traitType]);
-        const val = !!t.value ? t.value : layers[t.collection][t.traitType][randomInt(layers[t.collection][t.traitType].length)].value;
-        const layer = layers[t.collection][t.traitType].find(l =>
+        const val = !!t.value ? t.value : layers[t.collection][t.trait_type][randomInt(layers[t.collection][t.trait_type].length)].value;
+        const layer = layers[t.collection][t.trait_type].find(l =>
             l.value === val
         );
         if (layer) actualTraits.push(layer);
@@ -40,14 +40,14 @@ const generateMulti = async (traits: Omit<Trait, 'data'>[], num: number) => {
 
 const traits: Omit<Trait, 'data'>[] = [
     // { collection: 'moonbirds', 'traitType': 'Body', value: 'Crescent - Green' },
-    { collection: 'landmarks', 'traitType': 'background', value: '' },
-    { collection: 'nouns', 'traitType': 'bodies', value: '' },
+    { collection: 'landmarks', 'trait_type': 'background', value: '' },
+    { collection: 'nouns', 'trait_type': 'bodies', value: '' },
     // { collection: 'nouns', 'traitType': 'heads', value: '' },
     // { collection: 'nouns', 'traitType': 'accessories', value: 'accessory-aardvark' },
     // { collection: 'mfers', traitType: 'smoke', value: 'cig black' },
     // { collection: 'goblintown', traitType: 'body', value: '' },
-    { collection: 'goblintown', traitType: 'head', value: '' },
-    { collection: 'nouns', 'traitType': 'accessories', value: '' },
+    { collection: 'goblintown', trait_type: 'head', value: '' },
+    { collection: 'nouns', 'trait_type': 'accessories', value: '' },
     // { collection: 'goblintown', traitType: 'lefteye', value: '' },
     // { collection: 'goblintown', traitType: 'righteye', value: '' },
     // { collection: 'mfers', 'traitType': 'type', value: 'plain mfer' },
