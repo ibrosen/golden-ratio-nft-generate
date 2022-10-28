@@ -75,7 +75,7 @@ export const generateImages = async (startId: number, numToGenerate: number, fol
         }
     }
     while (generated < numToGenerate) {
-        const meta = JSON.parse(fs.readFileSync(`${outMetaDir}/${Math.floor(generated / folderBatchSize) * folderBatchSize}/${currId}.json`, { encoding: 'utf-8' }))
+        const meta = JSON.parse(fs.readFileSync(`${outMetaDir}/${Math.floor(generated / folderBatchSize) * folderBatchSize}/${generated}.json`, { encoding: 'utf-8' }))
         const traits = meta.attributes.map((attr: Trait) => {
             const traitTypeSplit = attr.trait_type.split("-");
             const traitType = traitTypeSplit.slice(1).join("-")
