@@ -50,7 +50,7 @@ export const generateMetadata = async (startId: number, numToGenerate: number, f
         out[i] = {
             name: `Golden Ratio #${i}`, attributes: r.map(r => ({
                 value: r.value,
-                trait_type: r.traitType
+                trait_type: `${r.collection}-${r.traitType}`
             })),
             description: "Description",
             image: `ipfs://${i}`
