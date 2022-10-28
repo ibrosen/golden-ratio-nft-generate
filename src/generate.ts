@@ -1,7 +1,7 @@
 import fs from 'fs';
 import keccak256 from 'keccak256';
 import { readLayersIntoMemory } from './utils/layers';
-import { Trait } from './types';
+import { TokenMetadata, Trait } from './types';
 import { rmMkdir, sleep } from './utils/general';
 import { generateRandom, generateSingleImage } from './utils/generate';
 
@@ -45,13 +45,15 @@ export const generateMetadata = async (startId: number, numToGenerate: number, f
 
     console.log(`Generated ${randoms.length} metadata, with ${collisions} collisions in ${(Date.now() - start) / 1000}s`);
 
-    const out: Record<number, any> = {}
+    const out: Record<number, TokenMetadata> = {}
     randoms.forEach((r, i) => {
         out[i] = {
-            id: i, attributes: r.map(r => {
-                const temp = r;
-                return { ...temp, data: null };
-            })
+            name: `Golden Ratio #${i}`, attributes: r.map(r => ({
+                value: r.value,
+                trait_type: r.traitType
+            })),
+            description: "Description",
+            image: `ipfs://${i}`
         }
     })
     // fs.writeFileSync(process.cwd() /src+ '/metadata.json', JSON.stringify(out));

@@ -30,7 +30,7 @@ export const generateRandom = async (collectionLayers: CollectionTraits) => {
     //Pick background
     const bg = pickRandomLayer(
         {
-            goblintown: ['background'],
+            goblintown: ['collrzes'],
             mfers: ['background'],
             nouns: ['backgrounds'],
             tinydinos: ['background'],
@@ -41,7 +41,7 @@ export const generateRandom = async (collectionLayers: CollectionTraits) => {
     //Pick body
     const body = pickRandomLayer(
         {
-            goblintown: ['body'],
+            goblintown: ['bodee'],
             mfers: ['type'],
             nouns: ['bodies'],
             tinydinos: ['body'],
@@ -65,7 +65,7 @@ export const generateRandom = async (collectionLayers: CollectionTraits) => {
 
     const pickHeadNormal = () => pickRandomLayer(
         {
-            goblintown: ['head'],
+            goblintown: ['Hedz'],
             nouns: ['heads'],
         }, collectionLayers
     );
@@ -104,13 +104,13 @@ export const generateRandom = async (collectionLayers: CollectionTraits) => {
     const addGoblinEyes = () => {
         toMash.push(pickRandomLayer(
             {
-                goblintown: ['lefteye'],
+                goblintown: ['Eye on dis side'],
             }, collectionLayers
         ));
 
         toMash.push(pickRandomLayer(
             {
-                goblintown: ['righteye'],
+                goblintown: ['Eye on dat side'],
             }, collectionLayers
         ));
     };
@@ -119,7 +119,7 @@ export const generateRandom = async (collectionLayers: CollectionTraits) => {
     const addGoblinNose = () => {
         toMash.push(pickRandomLayer(
             {
-                goblintown: ['nose'],
+                goblintown: ['stankfinder'],
             }, collectionLayers
         ));
     };
@@ -195,7 +195,7 @@ export const generateRandom = async (collectionLayers: CollectionTraits) => {
         ) {
             toMash.push(pickRandomLayer(
                 {
-                    goblintown: ['mouth'],
+                    goblintown: ['MUNCHYHOLE'],
                 }, collectionLayers
             ));
             addGoblinNose();
@@ -216,11 +216,11 @@ export const generateRandom = async (collectionLayers: CollectionTraits) => {
             }, collectionLayers
         ));
     }
-    else if (toMash.find(t => t.collection === 'goblintown' && (t.traitType === 'eyes' || t.traitType === 'head'))) {
-        if (toMash.find(t => t.collection === 'goblintown' && t.traitType === 'nose')) {
+    else if (toMash.find(t => t.collection === 'goblintown' && (t.traitType === 'Eye on dat side' || t.traitType === 'Hedz'))) {
+        if (toMash.find(t => t.collection === 'goblintown' && t.traitType === 'stankfinder')) {
             toMash.push(pickRandomLayer(
                 {
-                    goblintown: ['mouth']
+                    goblintown: ['MUNCHYHOLE']
                 }, collectionLayers
             ));
         } else {
@@ -239,11 +239,11 @@ export const generateRandom = async (collectionLayers: CollectionTraits) => {
             addMferOrGobMouth();
         }
     } else if (head?.collection === 'mfers') {
-        if (!toMash.find(t => t.collection === 'goblintown' && t.traitType === 'nose'))
+        if (!toMash.find(t => t.collection === 'goblintown' && t.traitType === 'stankfinder'))
             toMash.push(pickRandomLayer(
                 {
                     mfers: ['mouth'],
-                    goblintown: ['mouth'],
+                    goblintown: ['MUNCHYHOLE'],
                     moonbirds: ['Beak'],
                 }, collectionLayers
             ));
@@ -269,7 +269,7 @@ export const generateRandom = async (collectionLayers: CollectionTraits) => {
                     tinydinos: ['spikes'],
                 }, collectionLayers
             ));
-    } else if (['moonbirds'].includes(head?.collection ?? '') && !toMash.find(t => t.traitType === 'righteye' || t.traitType === 'lefteye')) {
+    } else if (['moonbirds'].includes(head?.collection ?? '') && !toMash.find(t => t.traitType === 'Eye on dat side')) {
         if (ranHat < 0.9)
             if (ranHat < 0.15) {
                 toMash.push(pickRandomLayer(
