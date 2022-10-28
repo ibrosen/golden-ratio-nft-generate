@@ -65,9 +65,8 @@ export const generateImages = async (startId: number, numToGenerate: number, fol
     const start = Date.now();
 
     let promises: Promise<void>[] = [];
-    let generated = 0;
-    let currId = startId + await checkProgress(startId, numToGenerate, folderBatchSize);;
-    console.log(currId)
+    let generated = startId + await checkProgress(startId, numToGenerate, folderBatchSize);;
+    console.log(generated)
     const executeBatch = async (curr: Promise<void>, size = 100) => {
         promises.push(curr);
         if (promises.length >= size) {
@@ -89,10 +88,9 @@ export const generateImages = async (startId: number, numToGenerate: number, fol
         })
 
         await executeBatch(generateSingleImage(traits, generated, outImageDir, folderBatchSize))
-        process.stdout.write(`#${soFar++} successfully generated \r`);
+        process.stdout.write(`#${soFar++} successfully generated this round, up to ${generated} \r`);
 
         generated++;
-        currId++;
     }
     console.log(`Generated ${generated} images in ${(Date.now() - start) / 1000}s`);
 }
