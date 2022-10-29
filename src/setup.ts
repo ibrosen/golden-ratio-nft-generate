@@ -18,7 +18,6 @@ const main = async () => {
     }
 
     if (mode === "layers" || mode === "layersAndClear") {
-        rmMkdir(process.cwd() + "/src/layers-resized")
         await resizeLayers();
         await sleep(10000);
     }
