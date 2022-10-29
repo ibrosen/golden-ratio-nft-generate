@@ -9,11 +9,6 @@ const main = async () => {
     const startId = +process.argv.pop()!;
     const mode = process.argv.pop()!;
 
-    if (mode === "layers" || mode === "layersAndClear") {
-        await readLayersIntoMemory(true);
-        await sleep(10000);
-    }
-
     if (mode === "clear" || mode === "layersAndClear") {
         rmMkdir(process.cwd() + "/src/out")
         await sleep(10000);
@@ -21,6 +16,13 @@ const main = async () => {
         rmMkdir(outMetaDir);
         await sleep(10000);
     }
+
+    if (mode === "layers" || mode === "layersAndClear") {
+        rmMkdir(process.cwd() + "/src/layers-resized")
+        await resizeLayers();
+        await sleep(10000);
+    }
+
     for (let i = Math.floor(startId / folderBatchSize); i < Math.floor((startId + numToGenerate) / folderBatchSize); i++) {
         const currOutImageDir = `${outImageDir}/${i * folderBatchSize}`
         if (!fs.existsSync(currOutImageDir)) {

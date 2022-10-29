@@ -72,7 +72,6 @@ export const readLayersIntoMemory = async (readImages?: boolean) => {
 export const resizeLayers = async () => {
     const layerRootDir = process.cwd() + '/src/cc0-nft-layers';
     const outDirName = process.cwd() + '/src/layers-resized';
-    rmMkdir(process.cwd() + '/src/out')
     rmMkdir(outDirName)
     await sleep(2000);
     let countSoFar = 0;
