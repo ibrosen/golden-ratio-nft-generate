@@ -11,6 +11,7 @@ const main = async () => {
 
     if (mode === "layers" || mode === "layersAndClear") {
         await readLayersIntoMemory(true);
+        await sleep(10000);
     }
 
     if (mode === "clear" || mode === "layersAndClear") {
