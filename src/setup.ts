@@ -8,6 +8,7 @@ const main = async () => {
     const numToGenerate = +process.argv.pop()!;
     const startId = +process.argv.pop()!;
     const mode = process.argv.pop()!;
+    console.log(numToGenerate, startId, folderBatchSize, mode)
 
     if (mode === "clear" || mode === "layersAndClear") {
         rmMkdir(process.cwd() + "/src/out")
@@ -27,6 +28,8 @@ const main = async () => {
         if (!fs.existsSync(currOutImageDir)) {
             fs.mkdirSync(currOutImageDir)
             fs.mkdirSync(`${outMetaDir}/${i * folderBatchSize}`)
+            await sleep(2000);
+
         }
     }
 }

@@ -89,9 +89,12 @@ export const generateImages = async (startId: number, numToGenerate: number, fol
 
         await executeBatch(generateSingleImage(traits, generated, outImageDir, folderBatchSize))
         process.stdout.write(`#${soFar++} successfully generated this round, up to ${generated} \r`);
-
         generated++;
+
     }
+    if (promises.length)
+        await Promise.all(promises);
+
     console.log(`Generated ${generated} images in ${(Date.now() - start) / 1000}s`);
 }
 
