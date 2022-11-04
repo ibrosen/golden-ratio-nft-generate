@@ -9,7 +9,7 @@ export const checkProgress = async (startId: number, numToCheck: number, folderB
 
         if (size !== folderBatchSize) {
             console.log(`📊 [${i * folderBatchSize + size}/${numToCheck}] generated so far`)
-            return i * folderBatchSize + size;
+            return i * folderBatchSize + size - startId;
         }
     }
 
