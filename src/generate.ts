@@ -65,8 +65,8 @@ export const generateImages = async (startId: number, numToGenerate: number, fol
     const start = Date.now();
 
     let promises: Promise<void>[] = [];
-    let generated = startId + await checkProgress(startId, numToGenerate, folderBatchSize);;
-    console.log(generated)
+    let currId = startId + await checkProgress(startId, numToGenerate, folderBatchSize);;
+    console.log(currId)
     const executeBatch = async (curr: Promise<void>, size = 100) => {
         promises.push(curr);
         if (promises.length >= size) {
@@ -74,8 +74,8 @@ export const generateImages = async (startId: number, numToGenerate: number, fol
             promises = [];
         }
     }
-    while (generated < numToGenerate) {
-        const meta = JSON.parse(fs.readFileSync(`${outMetaDir}/${Math.floor(generated / folderBatchSize) * folderBatchSize}/${generated}.json`, { encoding: 'utf-8' }))
+    while (currId < startId + numToGenerate) {
+        const meta = JSON.parse(fs.readFileSync(`${outMetaDir}/${Math.floor(currId / folderBatchSize) * folderBatchSize}/${currId}.json`, { encoding: 'utf-8' }))
         const traits = meta.attributes.map((attr: Trait) => {
             const traitTypeSplit = attr.trait_type.split("-");
             const traitType = traitTypeSplit.slice(1).join("-")
@@ -87,15 +87,15 @@ export const generateImages = async (startId: number, numToGenerate: number, fol
             return found;
         })
 
-        await executeBatch(generateSingleImage(traits, generated, outImageDir, folderBatchSize))
-        process.stdout.write(`#${soFar++} successfully generated this round, up to ${generated} \r`);
-        generated++;
+        await executeBatch(generateSingleImage(traits, currId, outImageDir, folderBatchSize))
+        process.stdout.write(`#${soFar++} successfully generated this round, up to ${currId} \r`);
+        currId++;
 
     }
     if (promises.length)
         await Promise.all(promises);
 
-    console.log(`Generated ${generated} images in ${(Date.now() - start) / 1000}s`);
+    console.log(`Generated ${currId} images in ${(Date.now() - start) / 1000}s`);
 }
 
 
