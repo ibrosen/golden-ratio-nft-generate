@@ -10,5 +10,4 @@ npm install -g pm2
 npm install -g yarn
 yarn set version classic
 yarn
-yarn setup -- layersAndClear 100000 200000 10000
-pm2 start --no-autorestart --interpreter bash yarn -- generate -- --images 0 500000 10000
+yarn setup -- layers
