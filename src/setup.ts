@@ -4,11 +4,11 @@ import fs from 'fs';
 
 const main = async () => {
 
+    console.log(process.argv)
     const folderBatchSize = +process.argv.pop()!;
     const numToGenerate = +process.argv.pop()!;
     const startId = +process.argv.pop()!;
     const mode = process.argv.pop();
-    console.log(process.argv)
     console.log(numToGenerate, startId, folderBatchSize, mode)
 
     if (mode === "clear" || mode === "layersAndClear") {
