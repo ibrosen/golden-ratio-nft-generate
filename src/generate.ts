@@ -2,7 +2,7 @@ import fs from 'fs';
 import keccak256 from 'keccak256';
 import { readLayersIntoMemory } from './utils/layers';
 import { TokenMetadata, Trait } from './types';
-import { outImageDir, outMetaDir, sleep } from './utils/general';
+import { cyrb128, mulberry32, outImageDir, outMetaDir, sleep } from './utils/general';
 import { generateRandom, generateSingleImage } from './utils/generate';
 import { checkProgress } from './utils/check';
 
@@ -10,52 +10,48 @@ import { checkProgress } from './utils/check';
 export const generateMetadata = async (startId: number, numToGenerate: number, folderBatchSize: number) => {
     const collectionLayers = await readLayersIntoMemory();
     const seen: Record<string, boolean> = {};
-    const randoms: Trait[][] = [];
     let collisions = 0;
 
     const start = Date.now();
+    var seed = cyrb128("golden ratio");
+    // Only one 32-bit component hash is needed for mulberry32.
+    const rand = mulberry32(seed[0]);
+    let written = 0;
 
     for (let i = 0; i < numToGenerate + startId; i++) {
 
-        const random = await generateRandom(collectionLayers);
+        const random = await generateRandom(collectionLayers, rand);
 
         const traitStrs: string[] = [];
         random.forEach(t => traitStrs.push(`${t.trait_type}:${t.value}`));
         const hash = keccak256(traitStrs.join(',')).toString('hex').slice(0, 32);
 
         if (!seen[hash]) {
-            process.stdout.write(`#${randoms.length} successfully generated \r`);
             seen[hash] = true;
             if (i >= startId) {
-                randoms.push(random);
+                const toWrite =
+                {
+                    name: `Golden Ratio #${i}`, attributes: random.map(ra => ({
+                        value: ra.value,
+                        trait_type: `${ra.collection}-${ra.trait_type}`
+                    })),
+                    description: "Description",
+                    image: `ipfs://${i}`
+                }
+                written++;
+                fs.writeFileSync(`${outMetaDir}/${Math.floor(i / folderBatchSize) * folderBatchSize}/${i}.json`, JSON.stringify(toWrite))
+
             }
         } else {
             ++collisions;
-            console.log(`\nCollision #${collisions}, ${randoms.length} successful`);
+            process.stdout.write(`Collision #${collisions},${written} written so far, up to ${i}\r`);
             i--;
         }
 
     }
 
 
-    console.log(`Generated ${randoms.length} metadata, with ${collisions} collisions in ${(Date.now() - start) / 1000}s`);
-    const out: Record<number, TokenMetadata> = {}
-    randoms.forEach((r, i) => {
-        const id = i + startId
-        out[i] = {
-            name: `Golden Ratio #${id}`, attributes: r.map(r => ({
-                value: r.value,
-                trait_type: `${r.collection}-${r.trait_type}`
-            })),
-            description: "Description",
-            image: `ipfs://${id}`
-        }
-    })
-    // fs.writeFileSync(process.cwd() /src+ '/metadata.json', JSON.stringify(out));
-    for (let i = 0; i < randoms.length; i++) {
-        const id = i + startId;
-        fs.writeFileSync(`${outMetaDir}/${Math.floor(id / folderBatchSize) * folderBatchSize}/${id}.json`, JSON.stringify(out[i]))
-    }
+    console.log(`Generated ${written} metadata, with ${collisions} collisions in ${(Date.now() - start) / 1000}s`);
 };
 
 export const generateImages = async (startId: number, numToGenerate: number, folderBatchSize: number) => {

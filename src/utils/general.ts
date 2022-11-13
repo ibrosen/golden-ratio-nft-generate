@@ -7,7 +7,7 @@ export const TOTAL_TO_GENERATE = 10_000_000;
 
 
 // Seeded RNG https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-in-javascript
-const mulberry32 = (a: number) => {
+export const mulberry32 = (a: number) => {
     return function () {
         var t = a += 0x6D2B79F5;
         t = Math.imul(t ^ t >>> 15, t | 1);
@@ -16,7 +16,7 @@ const mulberry32 = (a: number) => {
     }
 }
 
-const cyrb128 = (str: string) => {
+export const cyrb128 = (str: string) => {
     let h1 = 1779033703, h2 = 3144134277,
         h3 = 1013904242, h4 = 2773480762;
     for (let i = 0, k; i < str.length; i++) {
@@ -34,17 +34,12 @@ const cyrb128 = (str: string) => {
 }
 // Create cyrb128 state:
 var seed = cyrb128("golden ratio");
-
 // Only one 32-bit component hash is needed for mulberry32.
-export const rand = mulberry32(seed[0]);
+const rand = mulberry32(seed[0]);
 
 export const randomInt = (max: number) =>
     Math.floor(rand() * max);
 
-console.log(rand());
-console.log(rand());
-console.log(rand());
-console.log(rand());
 
 export const rmMkdir = (dir: string) => {
     const mkDr = () => {

@@ -1,6 +1,6 @@
 import sharp from 'sharp';
 import { CollectionTraits, Trait } from '../types';
-import { rand, randomInt } from './general';
+import { randomInt } from './general';
 
 const NUM_COLLECTIONS_SO_FAR = 5;
 
@@ -25,7 +25,7 @@ const pickRandomLayer = (layers: Record<string, string[]>, collectionLayers: Col
     return randTrait;
 };
 
-export const generateRandom = async (collectionLayers: CollectionTraits) => {
+export const generateRandom = async (collectionLayers: CollectionTraits, rand: () => number) => {
     const toMash: Trait[] = [];
     //Pick background
     const bg = pickRandomLayer(
@@ -256,7 +256,7 @@ export const generateRandom = async (collectionLayers: CollectionTraits) => {
 
     //hat
     const ranHat = rand();
-    if (head?.collection === 'tinydinos') {
+    if (body?.collection === 'tinydinos') {
         if (ranHat < 0.33)
             toMash.push(pickRandomLayer(
                 {

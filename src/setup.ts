@@ -32,7 +32,8 @@ const main = async () => {
         const currOutImageDir = `${outImageDir}/${i * folderBatchSize}`
         if (!fs.existsSync(currOutImageDir)) {
             fs.mkdirSync(currOutImageDir)
-            fs.mkdirSync(`${outMetaDir}/${i * folderBatchSize}`)
+            if (mode !== "clearImages")
+                fs.mkdirSync(`${outMetaDir}/${i * folderBatchSize}`)
         }
     }
 }
