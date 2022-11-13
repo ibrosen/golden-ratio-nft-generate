@@ -22,9 +22,7 @@ export const generateMetadata = async (startId: number, numToGenerate: number, f
 
         const random = await generateRandom(collectionLayers, rand);
 
-        const traitStrs: string[] = [];
-        random.forEach(t => traitStrs.push(`${t.trait_type}:${t.value}`));
-        const hash = keccak256(traitStrs.join(',')).toString('hex').slice(0, 32);
+        const hash = keccak256(random.map(t => `${t.trait_type}:${t.value}`).join(',')).toString('hex').slice(0, 64);
 
         if (!seen[hash]) {
             seen[hash] = true;
