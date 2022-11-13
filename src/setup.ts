@@ -19,6 +19,10 @@ const main = async () => {
         await sleep(10000);
     }
 
+    if (mode === "clearImages") {
+        rmMkdir(outImageDir);
+    }
+
     if (mode === "layers" || mode === "layersAndClear") {
         await resizeLayers();
         await sleep(10000);
@@ -29,8 +33,6 @@ const main = async () => {
         if (!fs.existsSync(currOutImageDir)) {
             fs.mkdirSync(currOutImageDir)
             fs.mkdirSync(`${outMetaDir}/${i * folderBatchSize}`)
-            await sleep(2000);
-
         }
     }
 }

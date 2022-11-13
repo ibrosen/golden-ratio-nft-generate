@@ -41,6 +41,11 @@ export const rand = mulberry32(seed[0]);
 export const randomInt = (max: number) =>
     Math.floor(rand() * max);
 
+console.log(rand());
+console.log(rand());
+console.log(rand());
+console.log(rand());
+
 export const rmMkdir = (dir: string) => {
     const mkDr = () => {
         fs.mkdir(dir, () => { console.log(`✔️ Made dir`) });
