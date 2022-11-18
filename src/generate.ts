@@ -49,7 +49,9 @@ export const generateMetadata = async (startId: number, numToGenerate: number, f
         }
 
     }
-    console.log('')
+    console.log("")
+    console.log(randoms.length)
+    console.log("")
     for (let i = 0; i < randoms.length; i++) {
         const r = randoms[i]
         const folderIndex = Math.floor(i / folderBatchSize)
@@ -64,7 +66,7 @@ export const generateMetadata = async (startId: number, numToGenerate: number, f
         }
 
         process.stdout.write(`Written ${written++}\r`);
-        // fs.writeFileSync(`${outMetaDir}/${Math.floor(i / folderBatchSize) * folderBatchSize}/${i}.json`, JSON.stringify(out))
+        fs.writeFileSync(`${outMetaDir}/${Math.floor(i / folderBatchSize) * folderBatchSize}/${i}.json`, JSON.stringify(out))
     }
 
     console.log(`Generated ${written} metadata, with ${collisions} collisions in ${(Date.now() - start) / 1000}s`);
