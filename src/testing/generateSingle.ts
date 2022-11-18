@@ -16,7 +16,7 @@ const generate = async (traits: Omit<Trait, 'data'>[], layers: CollectionTraits,
         if (layer) actualTraits.push(layer);
     });
 
-    await generateSingleImage(actualTraits, fs.readdirSync(outDir).length, outDir);
+    await generateSingleImage(actualTraits, fs.readdirSync(outDir).length, outDir, 10000);
 
 };
 

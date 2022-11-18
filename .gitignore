@@ -2,6 +2,7 @@
 node_modules
 src/out
 src/layers-resized
+dist/
 
 .yarn/*
 !.yarn/patches

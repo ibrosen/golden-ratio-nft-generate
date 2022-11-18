@@ -25,7 +25,7 @@ const pickRandomLayer = (layers: Record<string, string[]>, collectionLayers: Col
     return randTrait;
 };
 
-export const generateRandom = async (collectionLayers: CollectionTraits, rand: () => number) => {
+export const generateRandom = (collectionLayers: CollectionTraits, rand: () => number) => {
     const toMash: Trait[] = [];
     //Pick background
     const bg = pickRandomLayer(

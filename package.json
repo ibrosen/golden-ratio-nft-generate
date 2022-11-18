@@ -6,7 +6,8 @@
     "scripts": {
         "check": "npx ts-node src/check.ts",
         "generate": "npx ts-node src/generate.ts",
-        "setup": "npx ts-node src/setup.ts"
+        "setup": "npx ts-node src/setup.ts",
+        "build": "tsc"
     },
     "keywords": [],
     "author": "",
