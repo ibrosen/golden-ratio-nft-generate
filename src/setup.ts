@@ -16,17 +16,13 @@ const main = async () => {
         await sleep(10000);
         rmMkdir(outImageDir);
         rmMkdir(outMetaDir);
-        await sleep(10000);
-    }
-
-    if (mode === "clearImages") {
-        rmMkdir(outImageDir);
     }
 
     if (mode === "layers" || mode === "layersAndClear") {
         await resizeLayers();
         await sleep(10000);
     }
+    await sleep(60000);
 
     for (let i = Math.floor(startId / folderBatchSize); i < Math.floor((startId + numToGenerate) / folderBatchSize); i++) {
         const currOutImageDir = `${outImageDir}/${i * folderBatchSize}`

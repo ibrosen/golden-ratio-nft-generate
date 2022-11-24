@@ -4,6 +4,7 @@ export const outImageDir = `${process.cwd()}/src/out/images`;
 export const outMetaDir = `${process.cwd()}/src/out/metadata`;
 
 export const TOTAL_TO_GENERATE = 10_000_000;
+export const NUM_PER_UPLOAD = 100_000
 
 
 // Seeded RNG https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-in-javascript
@@ -42,7 +43,8 @@ export const randomInt = (max: number) =>
 
 
 export const rmMkdir = (dir: string) => {
-    const mkDr = () => {
+    const mkDr = async () => {
+        await sleep(1000)
         fs.mkdir(dir, () => { console.log(`✔️ Made dir`) });
     }
     console.log(`Making dir: ${dir}`)

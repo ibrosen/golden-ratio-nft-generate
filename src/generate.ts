@@ -2,7 +2,7 @@ import fs from 'fs';
 import keccak256 from 'keccak256';
 import { readLayersIntoMemory } from './utils/layers';
 import { TokenMetadata, Trait } from './types';
-import { cyrb128, mulberry32, outImageDir, outMetaDir, sleep } from './utils/general';
+import { cyrb128, mulberry32, NUM_PER_UPLOAD, outImageDir, outMetaDir, sleep } from './utils/general';
 import { generateRandom, generateSingleImage } from './utils/generate';
 import { checkProgress } from './utils/check';
 import { cids } from './cids';
@@ -22,7 +22,6 @@ export const generateMetadata = async (startId: number, numToGenerate: number, f
     let written = 0;
     let hash = '';
     let random: Trait[] = []
-    const randoms: Trait[][] = []
 
     for (let i = 0; i < numToGenerate + startId; i++) {
         random = generateRandom(collectionLayers, rand);
@@ -36,38 +35,28 @@ export const generateMetadata = async (startId: number, numToGenerate: number, f
                 seen3[hash] = true
             // console.log("new hash assigned")
             if (i >= startId) {
-                randoms.push(random)
-                written++;
-                // fs.writeFileSync(`${outMetaDir}/${folderNumber}/${i}.json`, JSON.stringify(toWrite))
+                const folderIndex = Math.floor(i / NUM_PER_UPLOAD)
+                const folderNumber = Math.floor(i / folderBatchSize) * folderBatchSize
+                const out = {
+                    name: `Golden Ratio #${i}`, attributes: random.map(ra => ({
+                        value: ra.value,
+                        trait_type: `${ra.collection}-${ra.trait_type}`
+                    })),
+                    image: `ipfs://${cids[folderIndex] ?? i}/${folderNumber}/${i}.webp`
+                }
 
+                process.stdout.write(`Written ${written++}\r`);
+                fs.writeFileSync(`${outMetaDir}/${folderNumber}/${i}.json`, JSON.stringify(out))
             }
         } else {
 
             ++collisions;
-            process.stdout.write(`Collision #${collisions}, up to ${i}\r`);
+            process.stdout.write(`\nCollision #${collisions}, up to ${i}\r`);
             i--;
         }
 
     }
-    console.log("")
-    console.log(randoms.length)
-    console.log("")
-    for (let i = 0; i < randoms.length; i++) {
-        const r = randoms[i]
-        const folderIndex = Math.floor((i + startId) / folderBatchSize)
-        const folderNumber = folderIndex * folderBatchSize
-        const out = {
-            name: `Golden Ratio #${i}`, attributes: r.map(ra => ({
-                value: ra.value,
-                trait_type: `${ra.collection}-${ra.trait_type}`
-            })),
-            description: "Description",
-            image: `ipfs://${cids[folderIndex] ?? i}/${folderNumber}/${i}.webp`
-        }
 
-        process.stdout.write(`Written ${written++}\r`);
-        fs.writeFileSync(`${outMetaDir}/${folderNumber}/${i + startId}.json`, JSON.stringify(out))
-    }
 
     console.log(`Generated ${written} metadata, with ${collisions} collisions in ${(Date.now() - start) / 1000}s`);
 };
